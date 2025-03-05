@@ -51,6 +51,7 @@ public class TransactionManagementModel {
         this.userTo = userTo;
         this.amount = amount;
         this.timestamp = timestamp;
+        System.out.println("Transaction completed. Transaction ID: " + transactionId);
     }
 
     /**

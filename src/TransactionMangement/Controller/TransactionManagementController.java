@@ -15,7 +15,6 @@ public class TransactionManagementController {
     public void processPayment(String userFrom, String userTo, double amount) {
         // Log details of the payment process
         System.out.println("Processing payment from user " + userFrom + " to user " + userTo + " of amount: $" + amount);
-
         // Add further implementation here
     }
 }
