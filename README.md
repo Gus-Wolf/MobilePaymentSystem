@@ -1,6 +1,6 @@
-This is our mobile payment systems appliction.
+**This is our mobile payment systems appliction.**
 
-LCOM4 & Relatedness
+**LCOM4 & Relatedness**
 
 NotificationController – LCOM4 = 1, there are 2 methods that access notifications. 
 NotificationModel – LCOM4 = 1, multiple methods are independent, but one method accesses multiple classes.
@@ -19,8 +19,8 @@ Team Member ID + Name	Contribution in The Particular Assignment
 
 
 
-Ethan Snyder: 1	Team Leader, created some classes and contributed to lcom4 analysis
-August Wolf: 2	Created GitHub repo, created package structure, contributed to lcom4 analysis
-Zach Carson: 3	Created some classes and contributed to lcom4 analysis
-Juan Oliver: 4	Created some classes and contributed to lcom4 analysis
+Ethan Snyder: 1 Helped build out modules, javadocs and tests
+August Wolf: 2 Helped build out modules, javadocs and tests
+Zach Carson: 3	Helped build out modules, javadocs and tests
+Juan Oliver: 4	Helped build out modules, javadocs and tests
 
