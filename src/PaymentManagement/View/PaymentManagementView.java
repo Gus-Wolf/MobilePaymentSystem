@@ -1,6 +1,7 @@
 package PaymentManagement.View;
 
 public class PaymentManagementView {
-    public int balance;
-
+    public void showPaymentStatus(boolean success) {
+        System.out.println("Stub: Payment " + (success ? "successful" : "failed"));
+    }
 }
