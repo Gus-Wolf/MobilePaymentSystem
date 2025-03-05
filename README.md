@@ -18,6 +18,12 @@ UserManagementView – LCOM4 = 2, each attribute is accessed by one method
 Team Member ID + Name	Contribution in The Particular Assignment
 
 
+**M02 - A03**
+We added methods to each of the different classes and made sure that there were stubs that were
+ready for testing in them. We then created a testHarness class where we called the methods from the 
+controllers and made sure that our API design was working. The testHarness class works as it should
+and we instantiate the controllers which in turn instantiate more. 
+
 
 Ethan Snyder: 1 Helped build out modules, javadocs and tests
 August Wolf: 2 Helped build out modules, javadocs and tests
