@@ -1,5 +1,6 @@
 package NotificationManagement.Model;
 
+
 public class NotificationModel {
 
     private int id;

@@ -1,21 +1,25 @@
 package NotificationManagement.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import NotificationManagement.Model.NotificationModel;
+import NotificationManagement.View.NotificationView;
 
 public class NotificationController {
-
-    private List<String> notifications;
+    private NotificationModel model;
+    private NotificationView view;
 
     public NotificationController() {
-        this.notifications = new ArrayList<>();
+        model = new NotificationModel();
+        view = new NotificationView();
     }
 
-    public List<String> getNotifications() {
-        return notifications;
+    public void sendNotification(int id, String content) {
+        System.out.println("Stub: Sending notification with ID " + id);
+        model.setId(id);
+        model.setContent(content);
     }
 
-    public void addNotification(String notification) {
-        this.notifications.add(notification);
+    public void displayNotification() {
+        System.out.println("Stub: Displaying notification: " + model.getContent());
     }
 }
+
