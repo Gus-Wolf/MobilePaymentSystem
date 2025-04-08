@@ -1,62 +1,24 @@
 package NotificationManagement.Model;
 
+import java.time.LocalDateTime;
 
-public class NotificationModel {
+public abstract class Notification {
+    protected LocalDateTime time;
+    protected String userId;
 
-    /**
-     * This is the model for the class for notification, this is how the notification is modeled
-     */
-
-    private int id;
-    private String content;
-
-    public NotificationModel() {
+    public Notification(String userId) {
+        this.time = LocalDateTime.now();
+        this.userId = userId;
     }
 
-    /**
-     *
-     * @param id is the type of notification
-     * @param content is the stuff inside the notifcation that is being sent
-     */
+    public abstract String getContent();
 
-    public NotificationModel(int id, String content) {
-        this.id = id;
-        this.content = content;
+    public LocalDateTime getTime() {
+        return time;
     }
 
-    /**
-     *
-     * @return id
-     */
-
-    public int getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    /**
-     *
-     * @param id sets the id
-     */
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     *
-     * @return content
-     */
-
-    public String getContent() {
-        return content;
-    }
-
-    /**
-     *
-     * @param content sets the string of the message
-     */
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }
