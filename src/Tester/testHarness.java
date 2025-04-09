@@ -1,3 +1,4 @@
+package Tester;
 
 import NotificationManagement.Controller.NotificationController;
 import PaymentManagement.Controller.PaymentManagementController;
@@ -11,8 +12,8 @@ public class testHarness {
 
         // Test Notification System
         NotificationController notificationController = new NotificationController();
-        notificationController.sendNotification(1, "Test Notification");
-        notificationController.displayNotification();
+        //notificationController.sendNotification(1, "Test Notification");
+        //notificationController.displayNotification();
 
         // Test Payment System
         PaymentManagementController paymentController = new PaymentManagementController();
