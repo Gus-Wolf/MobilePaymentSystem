@@ -30,3 +30,7 @@ August Wolf: 2 Helped build out modules, javadocs and tests
 Zach Carson: 3	Helped build out modules, javadocs and tests
 Juan Oliver: 4	Helped build out modules, javadocs and tests
 
+**M03-A04**
+Created Notification Factory
+Created Notification UI Design Pattern
+
