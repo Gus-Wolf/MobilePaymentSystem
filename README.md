@@ -38,4 +38,5 @@ August Wolf 997519799: Created Factory backend for the link bank account use cas
 Created a progressive disclosure design pattern for linking bank account
 Classes: Profile View, BankLinkerFactory, and ChaseBankLinker
 Interface: BankLinker Interface
+When you run, run the ProfileView class and it will populate a GUI.
 

@@ -1,4 +1,4 @@
-/* import NotificationManagement.Controller.NotificationController;
+ import NotificationManagement.Controller.NotificationController;
 public class app {
     public static void main(String[] args) {
         NotificationController controller = new NotificationController();
@@ -17,4 +17,3 @@ public class app {
 
     }
 }
-*/
