@@ -39,3 +39,6 @@ Classes: Profile View, BankLinkerFactory, and ChaseBankLinker
 Interface: BankLinker Interface
 When you run, run the ProfileView class and it will populate a GUI.
 
+Zach Carson: Created Activity Feed with the Factory Design Pattern. Used an Activity Interface to create different types of Payment classes, then implemented those into an ActivityFeed Class
+
+
