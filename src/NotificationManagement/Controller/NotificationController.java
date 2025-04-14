@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationController {
-    private final Notification model = new Notification() {
+    private final NotificationModel model = new NotificationModel() {
 
     };
     private final NotificationView view = new NotificationView();
@@ -45,7 +45,7 @@ public class NotificationController {
     }
 
     private void updateSystem(Notification notification) {
-        model.setNotification();
+        model.setNotification(notification);
         history.add(notification);
         view.showNotification(notification.getContent());
     }
