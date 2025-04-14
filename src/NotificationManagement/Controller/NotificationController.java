@@ -1,4 +1,4 @@
-package NotificationManagement.Controller;
+ package NotificationManagement.Controller;
 
 import NotificationManagement.Model.*;
 import NotificationManagement.View.NotificationView;
@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationController {
-    private final NotificationModel model = new NotificationModel();
+    private final Notification model = new Notification() {
+
+    };
     private final NotificationView view = new NotificationView();
     private final List<Notification> history = new ArrayList<>();
 
@@ -43,7 +45,7 @@ public class NotificationController {
     }
 
     private void updateSystem(Notification notification) {
-        model.setNotification(notification);
+        model.setNotification();
         history.add(notification);
         view.showNotification(notification.getContent());
     }

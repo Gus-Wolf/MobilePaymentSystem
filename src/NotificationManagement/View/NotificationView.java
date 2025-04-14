@@ -1,4 +1,4 @@
-package NotificationManagement.View;
+ package NotificationManagement.View;
 
 import NotificationManagement.Model.Notification;
 import java.util.List;

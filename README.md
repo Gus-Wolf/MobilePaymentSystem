@@ -34,3 +34,8 @@ Juan Oliver: 4	Helped build out modules, javadocs and tests
 Created Notification Factory
 Created Notification UI Design Pattern
 
+Gus Wolf 997519799: Created Factory backend for the link bank account use case 
+Created a progressive disclosure design pattern for linking bank account
+Classes: Profile View, BankLinkerFactory, and ChaseBankLinker
+Interface: BankLinker Interface
+

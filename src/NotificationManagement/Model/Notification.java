@@ -11,6 +11,10 @@ public abstract class Notification {
         this.userId = userId;
     }
 
+    public void setNotification(notification) {
+
+    }
+
     public abstract String getContent();
 
     public LocalDateTime getTime() {
