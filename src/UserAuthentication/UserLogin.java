@@ -19,7 +19,7 @@ public class UserLogin {
     public UserLogin(String username, String password) {
         this.username = username;
         this.password = password;
-        System.out.println(username + "has been successfully logged in");
+        System.out.println(username + " has been successfully logged in");
     }
 
     /**
