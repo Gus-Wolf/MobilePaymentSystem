@@ -39,7 +39,7 @@ Classes: Profile View, BankLinkerFactory, and ChaseBankLinker
 Interface: BankLinker Interface
 When you run, run the ProfileView class and it will populate a GUI.
 
-Zach Carson: Created a "Main Menu" that appears after the user logs in with the UserLogin class. Gives the choice to go to the Business Dashboard or the Social Feed, which both relate to the Notification UI. 
+Zach Carson: Created a "Main Menu" that appears after the user logs in with the UserLogin class. Gives the choice to go to the Business Dashboard or the Social Feed. Basically connected the two main use cases so there's a flow between them. 
 Classes: UserLogin, App
 
 Juan Oliver: 
