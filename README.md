@@ -45,7 +45,6 @@ Juan Oliver:
 Created the User to User Payment use case using the Singleton design pattern. 
 Created the payment activity UI using the Wizard UI design pattern for users to send payments to each other. 
 Classes: Payment Manager, Payment Wizard Controller, Payment Wizard Frame, Step1Panel, Step2Panel, Step3Panel
-Interface:
 
 
 
