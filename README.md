@@ -41,4 +41,11 @@ When you run, run the ProfileView class and it will populate a GUI.
 
 Zach Carson: Created Activity Feed with the Factory Design Pattern. Used an Activity Interface to create different types of Payment classes, then implemented those into an ActivityFeed Class
 
+Juan Oliver: 
+Created the User to User Payment use case using the Singleton design pattern. 
+Created the payment activity UI using the Wizard UI design pattern for users to send payments to each other. 
+Classes: Payment Manager, Payment Wizard Controller, Payment Wizard Frame, Step1Panel, Step2Panel, Step3Panel
+Interface:
+
+
 
