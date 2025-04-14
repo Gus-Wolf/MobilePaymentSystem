@@ -10,7 +10,7 @@ public abstract class Notification {
         this.time = LocalDateTime.now();
         this.userId = userId;
     }
-
+//Change
     public abstract String getContent();
 
     public LocalDateTime getTime() {

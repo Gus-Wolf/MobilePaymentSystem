@@ -10,7 +10,7 @@ public class NotificationModel {
     public Notification getNotification() {
         return currentNotification;
     }
-
+//Change
     public String getNotificationContent() {
         return currentNotification != null ? currentNotification.getContent() : "No notification set.";
     }
