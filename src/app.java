@@ -1,4 +1,5 @@
  import NotificationManagement.Controller.NotificationController;
+ import NotificationManagement.View.NotificationView;
  import UserAuthentication.UserLogin;
  import java.util.Scanner;
 
