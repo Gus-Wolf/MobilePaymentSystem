@@ -2,7 +2,7 @@ package NotificationManagement.Model;
 
 import java.time.LocalDateTime;
 
-public abstract class Notification {
+public class Notification {
     protected LocalDateTime time;
     protected String userId;
 
@@ -10,8 +10,11 @@ public abstract class Notification {
         this.time = LocalDateTime.now();
         this.userId = userId;
     }
-//Change
-    public abstract String getContent();
+
+    //Change
+    public String getContent() {
+        return userId + time.toString();
+    }
 
     public LocalDateTime getTime() {
         return time;

@@ -1,14 +1,14 @@
- package NotificationManagement.Controller;
+package NotificationManagement.Controller;
 
 import NotificationManagement.Model.*;
 import NotificationManagement.View.NotificationView;
+import NotificationManagement.NotificationManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationController {
-    private final NotificationModel model = new NotificationModel() {
-
-    };
+    private final NotificationModel model = new NotificationModel();
     private final NotificationView view = new NotificationView();
     private final List<Notification> history = new ArrayList<>();
 
@@ -43,19 +43,25 @@ public class NotificationController {
         );
         updateSystem(n);
     }
-//Change
+
     private void updateSystem(Notification notification) {
         model.setNotification(notification);
         history.add(notification);
+
+        // Persist notification using NotificationManager
+        NotificationManager.saveNotification(notification);
+
         view.showNotification(notification.getContent());
     }
 
     public void displayHistory() {
-        view.displayNotifications(history);
+        // Load history from the persistent storage
+        List<Notification> allNotifications = model.getNotificationHistory();
+        view.displayNotifications(allNotifications);
     }
 
     public void setBusinessAccount(boolean isBusiness) {
-        if(isBusiness) {
+        if (isBusiness) {
             view.switchToBusinessView();
         } else {
             view.switchToPersonalView();
