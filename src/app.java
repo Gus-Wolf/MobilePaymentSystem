@@ -22,7 +22,7 @@ public class app {
         UserLogin authentication = new UserLogin(username, password);
         NotificationController controller = new NotificationController();
 
-        // Mocked user data
+        // fake data
         List<User> users = List.of(
                 new User(1, "Alice", 500),
                 new User(2, "Bob", 300)

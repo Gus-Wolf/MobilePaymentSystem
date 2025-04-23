@@ -16,7 +16,7 @@ public class OfferService {
     }
 
     public Offer sendOffer(int senderId, int receiverId, double amount) {
-        // Validate sender and receiver
+        // Validate
         User sender = findUserById(senderId);
         User receiver = findUserById(receiverId);
 
@@ -24,12 +24,12 @@ public class OfferService {
             throw new IllegalArgumentException("Sender or receiver does not exist");
         }
 
-        // Validate amount
+        // Validate amt
         if (amount <= 0 || sender.getBalance() < amount) {
             throw new IllegalArgumentException("Invalid amount or insufficient balance");
         }
 
-        // Deduct balance from the sender
+        // Take balance from sending party
         sender.setBalance(sender.getBalance() - amount);
 
         // Create and save the offer

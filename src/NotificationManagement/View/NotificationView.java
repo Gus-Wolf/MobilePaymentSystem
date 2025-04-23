@@ -80,7 +80,7 @@ public class NotificationView {
     }
 
     private void launchOfferGUI() {
-        OfferGUI.launch(null); // Replace `null` with the actual user list if accessible
+        OfferGUI.launch();
     }
 
     private void setupEventListeners() {
