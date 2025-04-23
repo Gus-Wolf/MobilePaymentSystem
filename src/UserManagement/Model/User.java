@@ -1,119 +1,55 @@
 package UserManagement.Model;
 
 public class User {
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private String address;
-    private String role;
     private int id;
+    private String name;
+    private double balance;
 
-    /**
-     * Gets the username of the user.
-     *
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
+    // Getters and setters
+    public User(int id, String name, double balance) {
+        this.id = id;
+        this.name = name;
+        this.balance = balance;
     }
 
-    /**
-     * Sets the username of the user.
-     *
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
+    // Overriding toString for debugging
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", balance=" + balance +
+                '}';
     }
 
-    /**
-     * Gets the password of the user.
-     *
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
+    public double getBalance() {
+        return balance;
     }
 
-    /**
-     * Sets the password of the user.
-     *
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public int getId() {
+        return id;
     }
 
-    /**
-     * Gets the email of the user.
-     *
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Sets the email of the user.
-     *
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
-    /**
-     * Gets the phone number of the user.
-     *
-     * @return the phone number
-     */
-    public String getPhone() {
-        return phone;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    /**
-     * Sets the phone number of the user.
-     *
-     * @param phone the phone number to set
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-     * Gets the address of the user.
-     *
-     * @return the address
-     */
-    public String getAddress() {
-        return address;
+    public User(double balance, int id, String name) {
+        this.balance = balance;
+        this.id = id;
+        this.name = name;
     }
 
-    /**
-     * Sets the address of the user.
-     *
-     * @param address the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
-     * Gets the role of the user.
-     *
-     * @return the role
-     */
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * Sets the role of the user.
-     *
-     * @param role the role to set
-     */
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

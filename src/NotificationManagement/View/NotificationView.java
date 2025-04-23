@@ -1,12 +1,15 @@
 package NotificationManagement.View;
 
 import NotificationManagement.Model.Notification;
+import TransactionMangement.View.OfferGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class NotificationView {
+    private static final String SEND_OFFER_LABEL = "Send Offer";
+
     private NotificationViewInterface viewStrategy;
 
     // GUI components
@@ -32,17 +35,17 @@ public class NotificationView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
 
-        // Main Panel for layout
+        // Main Panel
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        // Notification Display Area
+        // Notification Display
         notificationListModel = new DefaultListModel<>();
         notificationList = new JList<>(notificationListModel);
         JScrollPane scrollPane = new JScrollPane(notificationList);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Controls for Changing Views
+        // Changing Views
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         switchToBusinessButton = new JButton("Business View");
@@ -51,7 +54,7 @@ public class NotificationView {
         buttonPanel.add(switchToPersonalButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
-        // Input for Adding Notifications
+        // Adding Input Panel
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout());
         notificationInput = new JTextField(30);
@@ -60,12 +63,24 @@ public class NotificationView {
         inputPanel.add(addNotificationButton);
         mainPanel.add(inputPanel, BorderLayout.SOUTH);
 
-        // Add event listeners
+        // Adding "Send Offer" Button
+        JButton sendOfferButton = createSendOfferButton();
+        mainPanel.add(sendOfferButton, BorderLayout.EAST);
+
         setupEventListeners();
 
-        // Add panel to frame and make it visible
         frame.add(mainPanel);
         frame.setVisible(true);
+    }
+
+    private JButton createSendOfferButton() {
+        JButton sendOfferButton = new JButton(SEND_OFFER_LABEL);
+        sendOfferButton.addActionListener(e -> launchOfferGUI());
+        return sendOfferButton;
+    }
+
+    private void launchOfferGUI() {
+        OfferGUI.launch(null); // Replace `null` with the actual user list if accessible
     }
 
     private void setupEventListeners() {
