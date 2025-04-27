@@ -7,6 +7,14 @@ public class BusinessUser extends User {
     private String businessEmail;
     private String businessWebsite;
 
+    public BusinessUser(double balance, int id, String name) {
+        super(balance, id, name);
+    }
+
+    public BusinessUser(int id, String name, double balance) {
+        super(id, name, balance);
+    }
+
     /**
      * Gets the business name.
      *
