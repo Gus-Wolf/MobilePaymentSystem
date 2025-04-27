@@ -1,13 +1,12 @@
 package DbManagement.Controller;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
+import static javax.management.remote.JMXConnectorFactory.connect;
 
 public class DatabaseConnector {
 
-    private static final String URL = "jdbc:sqlite:mobile_payment_system.db"; // database file
+    private static final String URL = "jdbc:sqlite:C:/Users/zachc/Documents/GitHub/MobilePaymentSystem/mobile_payment_system.db";
 
     public static void main(String[] args) {
         createUsersTable();
@@ -50,6 +49,46 @@ public class DatabaseConnector {
         } catch (SQLException e) {
             System.out.println("❌ Failed to create 'bank_accounts' table!");
             e.printStackTrace();
+        }
+    }
+
+    public static boolean authenticate(String username, String password) {
+        // SQLite query to fetch user data based on the provided username and password
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set input values in the PreparedStatement
+            pstmt.setString(1, username);  // Set username parameter
+            pstmt.setString(2, password);  // Set password parameter
+
+            // Execute the query and get the result set
+            ResultSet rs = pstmt.executeQuery();
+
+            // If there’s a record in the database matching the input username and password, authentication is successful
+            if (rs.next()) {
+                System.out.println("Authentication successful for user: " + username);
+                return true;  // User authenticated successfully
+            } else {
+                System.out.println("Authentication failed for user: " + username);
+                return false;  // Authentication failed
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during authentication: " + e.getMessage());
+            return false;  // Return false in case of error
+        }
+    }
+
+    private static Connection connect() {
+        try {
+            // Establish the connection to SQLite
+            Connection connection = DriverManager.getConnection(URL);
+            System.out.println("Connection to SQLite has been established.");
+            return connection;
+        } catch (SQLException e) {
+            System.out.println("Error connecting to SQLite database: " + e.getMessage());
+            return null;
         }
     }
 }

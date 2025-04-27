@@ -1,6 +1,6 @@
 package UserAuthentication.View;
 
-import UserAuthentication.Model.Database;
+import DbManagement.Controller.DatabaseConnector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +42,7 @@ public class LoginGUI extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        if (Database.authenticate(username, password)) {
+        if (DatabaseConnector.authenticate(username, password)) {
             JOptionPane.showMessageDialog(this, "Login successful!");
             navigateToDashboard();  // Navigate to the Dashboard
         } else {
