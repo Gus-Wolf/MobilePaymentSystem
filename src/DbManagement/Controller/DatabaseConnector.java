@@ -28,7 +28,7 @@ public class DatabaseConnector {
             }
         } catch (SQLException e) {
             System.out.println("❌ Connection failed!");
-            e.printStackTrace();
+            e.printStackTrace();//so I can push again
         }
     }
 }
