@@ -6,31 +6,51 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConnector {
+
+    private static final String URL = "jdbc:sqlite:mobile_payment_system.db"; // database file
+
     public static void main(String[] args) {
-        String url = "jdbc:sqlite:mobile_payment_system.db"; // database file in your project folder
+        createUsersTable();
+        createBankAccountsTable();
+    }
 
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                System.out.println("✅ Connected to SQLite database!");
+    public static void createUsersTable() {
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement()) {
 
-                // Create tables if not exist
-                try (Statement stmt = conn.createStatement()) {
-                    String sql = "CREATE TABLE IF NOT EXISTS users (" +
-                            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "username TEXT NOT NULL," +
-                            "email TEXT," +
-                            "password TEXT NOT NULL" +
-                            ");";
-                    stmt.execute(sql);
+            String sql = "CREATE TABLE IF NOT EXISTS users (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "username TEXT NOT NULL," +
+                    "email TEXT," +
+                    "password TEXT NOT NULL" +
+                    ");";
+            stmt.execute(sql);
+            System.out.println("✅ Table 'users' created or already exists.");
 
-                    System.out.println("✅ Table 'users' created or already exists.");
-                }
-            }
         } catch (SQLException e) {
-            System.out.println("❌ Connection failed!");
-            e.printStackTrace();//so I can push again
+            System.out.println("❌ Failed to create 'users' table!");
+            e.printStackTrace();
+        }
+    }
+
+    public static void createBankAccountsTable() {
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement()) {
+
+            String sql = "CREATE TABLE IF NOT EXISTS bank_accounts (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "username TEXT NOT NULL," +
+                    "bank_name TEXT NOT NULL," +
+                    "account_number TEXT NOT NULL," +
+                    "routing_number TEXT NOT NULL" +
+                    ");";
+            stmt.execute(sql);
+            System.out.println("✅ Table 'bank_accounts' created or already exists.");
+
+        } catch (SQLException e) {
+            System.out.println("❌ Failed to create 'bank_accounts' table!");
+            e.printStackTrace();
         }
     }
 }
-
 
