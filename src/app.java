@@ -1,10 +1,9 @@
 import NotificationManagement.Controller.NotificationController;
-import UserAuthentication.UserLogin;
+import UserAuthentication.Model.UserLogin;
 import TransactionMangement.Controller.OfferService;
 import TransactionMangement.Model.Offer;
 import UserManagement.Model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 

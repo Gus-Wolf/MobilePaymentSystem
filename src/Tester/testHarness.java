@@ -3,7 +3,7 @@
 import NotificationManagement.Controller.NotificationController;
 import PaymentManagement.Controller.PaymentManagementController;
 import TransactionMangement.Controller.TransactionManagementController;
-import UserAuthentication.UserLogin;
+import UserAuthentication.Model.UserLogin;
 import UserManagement.Controller.UserController;
 
 public class testHarness {

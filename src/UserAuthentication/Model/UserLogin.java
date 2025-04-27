@@ -1,4 +1,4 @@
-package UserAuthentication;
+package UserAuthentication.Model;
 
 /**
  * The UserLogin class represents a simple user login mechanism
