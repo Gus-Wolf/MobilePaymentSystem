@@ -1,17 +1,29 @@
 package DbManagement.Controller;
 
-import java.sql.*;
-
-import static javax.management.remote.JMXConnectorFactory.connect;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 public class DatabaseConnector {
 
-    private static final String URL = "jdbc:sqlite:C:/Users/zachc/Documents/GitHub/MobilePaymentSystem/mobile_payment_system.db";
+    private static final String URL = "jdbc:sqlite:mobile_payment_system.db"; // <-- make sure path is right!
 
     public static void main(String[] args) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            System.out.println("✅ SQLite JDBC driver loaded!");
+        } catch (ClassNotFoundException e) {
+            System.out.println("❌ Failed to load SQLite JDBC driver!");
+            e.printStackTrace();
+        }
+
         createUsersTable();
         createBankAccountsTable();
+        insertDefaultUsers();
     }
+
 
     public static void createUsersTable() {
         try (Connection conn = DriverManager.getConnection(URL);
@@ -19,7 +31,7 @@ public class DatabaseConnector {
 
             String sql = "CREATE TABLE IF NOT EXISTS users (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "username TEXT NOT NULL," +
+                    "username TEXT NOT NULL UNIQUE," +
                     "email TEXT," +
                     "password TEXT NOT NULL" +
                     ");";
@@ -52,44 +64,40 @@ public class DatabaseConnector {
         }
     }
 
-    public static boolean authenticate(String username, String password) {
-        // SQLite query to fetch user data based on the provided username and password
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+    public static void insertDefaultUsers() {
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "INSERT OR IGNORE INTO users (username, email, password) VALUES (?, ?, ?)")) {
 
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            // Insert Gus
+            pstmt.setString(1, "Gus");
+            pstmt.setString(2, "gus@example.com");
+            pstmt.setString(3, "1234");
+            pstmt.executeUpdate();
 
-            // Set input values in the PreparedStatement
-            pstmt.setString(1, username);  // Set username parameter
-            pstmt.setString(2, password);  // Set password parameter
+            // Insert Juan
+            pstmt.setString(1, "Juan");
+            pstmt.setString(2, "juan@example.com");
+            pstmt.setString(3, "1234");
+            pstmt.executeUpdate();
 
-            // Execute the query and get the result set
-            ResultSet rs = pstmt.executeQuery();
+            // Insert Zach
+            pstmt.setString(1, "Zach");
+            pstmt.setString(2, "zach@example.com");
+            pstmt.setString(3, "1234");
+            pstmt.executeUpdate();
 
-            // If there’s a record in the database matching the input username and password, authentication is successful
-            if (rs.next()) {
-                System.out.println("Authentication successful for user: " + username);
-                return true;  // User authenticated successfully
-            } else {
-                System.out.println("Authentication failed for user: " + username);
-                return false;  // Authentication failed
-            }
+            // Insert Ethan
+            pstmt.setString(1, "Ethan");
+            pstmt.setString(2, "ethan@example.com");
+            pstmt.setString(3, "1234");
+            pstmt.executeUpdate();
+
+            System.out.println("✅ Default users inserted successfully.");
+
         } catch (SQLException e) {
-            System.out.println("Error during authentication: " + e.getMessage());
-            return false;  // Return false in case of error
-        }
-    }
-
-    private static Connection connect() {
-        try {
-            // Establish the connection to SQLite
-            Connection connection = DriverManager.getConnection(URL);
-            System.out.println("Connection to SQLite has been established.");
-            return connection;
-        } catch (SQLException e) {
-            System.out.println("Error connecting to SQLite database: " + e.getMessage());
-            return null;
+            System.out.println("❌ Failed to insert default users!");
+            e.printStackTrace();
         }
     }
 }
-
