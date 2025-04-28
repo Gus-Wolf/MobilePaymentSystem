@@ -140,18 +140,23 @@ public class NotificationView {
         JButton sendOfferButton = createStyledButton("Send Offer", ACCENT_COLOR);
         JButton refreshButton = createStyledButton("Refresh", PRIMARY_COLOR);
         JButton clearButton = createStyledButton("Clear All", new Color(200, 75, 75));
+        JButton profileButton = createStyledButton("Profile", new Color(100, 181, 246)); // Light blue color
+
 
         sendOfferButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         refreshButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         sendOfferButton.setMaximumSize(new Dimension(150, 40));
         refreshButton.setMaximumSize(new Dimension(150, 40));
         clearButton.setMaximumSize(new Dimension(150, 40));
+        profileButton.setMaximumSize(new Dimension(150, 40));
 
         sendOfferButton.addActionListener(e -> launchOfferGUI());
         refreshButton.addActionListener(e -> refreshNotifications());
         clearButton.addActionListener(e -> clearNotifications());
+        profileButton.addActionListener(e -> openProfileView());
 
         actionsPanel.add(Box.createVerticalStrut(5));
         actionsPanel.add(sendOfferButton);
@@ -159,7 +164,10 @@ public class NotificationView {
         actionsPanel.add(refreshButton);
         actionsPanel.add(Box.createVerticalStrut(15));
         actionsPanel.add(clearButton);
+        actionsPanel.add(Box.createVerticalStrut(15));
+        actionsPanel.add(profileButton);
         actionsPanel.add(Box.createVerticalGlue());
+
 
         // Only add if screen is wide enough
         if (Toolkit.getDefaultToolkit().getScreenSize().width > 1024) {
@@ -311,6 +319,12 @@ public class NotificationView {
         switchToPersonalButton.setBackground(new Color(100, 100, 100));
 
         statusLabel.setText("Switched to Business View");
+    }
+    private void openProfileView() {
+        SwingUtilities.invokeLater(() -> {
+            UserManagement.View.ProfileView.main(new String[]{});
+        });
+        statusLabel.setText("Opened Profile Page");
     }
 
     public void switchToPersonalView() {
