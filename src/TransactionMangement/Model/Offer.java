@@ -1,6 +1,9 @@
 package TransactionMangement.View;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,18 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OfferGUI extends JFrame {
-    private JTextField senderField; // Field to enter Sender ID
-    private JTextField receiverField; // Field to enter Receiver ID
-    private JTextField amountField; // Field to enter Amount
-    private JTable offerHistoryTable; // Table for past offers
-    private DefaultTableModel tableModel; // Data model for JTable
+    // UI Constants
+    private static final Color PRIMARY_COLOR = new Color(0, 121, 107); // Teal color
+    private static final Color SECONDARY_COLOR = new Color(33, 33, 33);
+    // --- FONT UPDATED HERE ---
+    private static final Font HEADER_FONT = new Font("Arial", Font.BOLD, 18);
+    private static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 14);
 
-    // Filename for saving offers
+    private JTextField senderField;
+    private JTextField receiverField;
+    private JTextField amountField;
+    private JTable offerHistoryTable;
+    private DefaultTableModel tableModel;
     private static final String OFFER_FILE = "offers.json";
 
     public OfferGUI() {
         setTitle("Send Offer");
-        setSize(500, 500);
+        setSize(600, 600); // Increased size for better spacing
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         initializeUI();
@@ -28,57 +36,190 @@ public class OfferGUI extends JFrame {
     }
 
     private void initializeUI() {
-        // Top panel for the form
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(4, 2, 10, 10));
-        formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Main container with rounded panel
+        RoundedPanel mainPanel = new RoundedPanel(20);
+        mainPanel.setLayout(new BorderLayout(15, 15));
+        mainPanel.setBackground(new Color(245, 245, 245));
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        add(mainPanel);
 
-        // Form Fields
-        formPanel.add(new JLabel("Sender ID:"));
-        senderField = new JTextField();
-        senderField.setToolTipText("Enter the ID of the sender");
+        // Form panel with rounded border
+        RoundedPanel formPanel = new RoundedPanel(15);
+        formPanel.setLayout(new GridLayout(4, 2, 15, 15));
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                new RoundedBorder(15, PRIMARY_COLOR),
+                new EmptyBorder(15, 15, 15, 15)
+        ));
+
+        // Form components with consistent styling
+        addStyledLabel("Sender ID:", formPanel);
+        senderField = createStyledTextField();
         formPanel.add(senderField);
 
-        formPanel.add(new JLabel("Receiver ID:"));
-        receiverField = new JTextField();
-        receiverField.setToolTipText("Enter the ID of the receiver");
+        addStyledLabel("Receiver ID:", formPanel);
+        receiverField = createStyledTextField();
         formPanel.add(receiverField);
 
-        formPanel.add(new JLabel("Amount:"));
-        amountField = new JTextField();
-        amountField.setToolTipText("Enter the amount to send");
+        addStyledLabel("Amount:", formPanel);
+        amountField = createStyledTextField();
         formPanel.add(amountField);
 
-        // Buttons for the form
-        JButton sendButton = new JButton("Send Offer");
-        sendButton.addActionListener(this::handleSendOffer);
-        formPanel.add(sendButton);
+        // Styled buttons
+        formPanel.add(createStyledButton("Send Offer", this::handleSendOffer));
+        formPanel.add(createStyledButton("Clear", e -> clearFormFields()));
 
-        JButton clearButton = new JButton("Clear");
-        clearButton.addActionListener(e -> clearFormFields());
-        formPanel.add(clearButton);
+        mainPanel.add(formPanel, BorderLayout.NORTH);
 
-        add(formPanel, BorderLayout.NORTH);
+        // History panel with rounded border
+        RoundedPanel historyPanel = new RoundedPanel(15);
+        historyPanel.setLayout(new BorderLayout());
+        historyPanel.setBackground(Color.WHITE);
+        historyPanel.setBorder(BorderFactory.createCompoundBorder(
+                new RoundedBorder(15, PRIMARY_COLOR),
+                new EmptyBorder(15, 15, 15, 15)
+        ));
 
-        // Middle panel: Offer history
-        JPanel historyPanel = new JPanel(new BorderLayout());
-        historyPanel.setBorder(BorderFactory.createTitledBorder("Offer History"));
-
-        // Table to display history
+        // Table setup with custom renderer
         String[] columns = {"Sender ID", "Receiver ID", "Amount"};
-        tableModel = new DefaultTableModel(columns, 0);
-        offerHistoryTable = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(offerHistoryTable);
-        historyPanel.add(scrollPane, BorderLayout.CENTER);
-        add(historyPanel, BorderLayout.CENTER);
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-        // Load and display previous offers
+        offerHistoryTable = new JTable(tableModel);
+        offerHistoryTable.setFont(NORMAL_FONT);
+        offerHistoryTable.setRowHeight(35);
+        offerHistoryTable.setDefaultRenderer(Object.class, new AlternatingRowRenderer());
+
+        JScrollPane scrollPane = new JScrollPane(offerHistoryTable);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        historyPanel.add(scrollPane, BorderLayout.CENTER);
+
+        mainPanel.add(historyPanel, BorderLayout.CENTER);
+
         loadAndDisplayOffers();
     }
 
+    private JTextField createStyledTextField() {
+        JTextField field = new JTextField();
+        field.setFont(NORMAL_FONT);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                new RoundedBorder(8, new Color(200, 200, 200)),
+                new EmptyBorder(8, 12, 8, 12)
+        ));
+        return field;
+    }
+
+    private void addStyledLabel(String text, JPanel panel) {
+        JLabel label = new JLabel(text);
+        label.setFont(NORMAL_FONT.deriveFont(Font.BOLD));
+        label.setForeground(SECONDARY_COLOR);
+        panel.add(label);
+    }
+
+    private JButton createStyledButton(String text, java.awt.event.ActionListener listener) {
+        JButton button = new JButton(text);
+        button.setFont(NORMAL_FONT.deriveFont(Font.BOLD));
+        button.setBackground(PRIMARY_COLOR);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(new RoundedBorder(8, PRIMARY_COLOR));
+        button.setContentAreaFilled(false);
+        button.setOpaque(true);
+        button.addActionListener(listener);
+
+        // Hover effects
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(PRIMARY_COLOR.darker());
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(PRIMARY_COLOR);
+            }
+        });
+
+        return button;
+    }
+
+    // Custom table cell renderer for alternating rows
+    private class AlternatingRowRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+
+            JLabel label = (JLabel) super.getTableCellRendererComponent(
+                    table, value, isSelected, hasFocus, row, column);
+
+            label.setFont(NORMAL_FONT);
+            label.setBorder(new EmptyBorder(0, 12, 0, 12));
+
+            if (isSelected) {
+                label.setBackground(new Color(224, 242, 241));
+                label.setForeground(PRIMARY_COLOR);
+            } else {
+                label.setBackground(row % 2 == 0 ? Color.WHITE : new Color(250, 250, 250));
+                label.setForeground(SECONDARY_COLOR);
+            }
+
+            return label;
+        }
+    }
+
+    // Rounded components from previous implementation
+    private class RoundedPanel extends JPanel {
+        private final int radius;
+
+        public RoundedPanel(int radius) {
+            this.radius = radius;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, radius, radius);
+            g2.dispose();
+            super.paintComponent(g);
+        }
+    }
+
+    private class RoundedBorder implements Border {
+        private final int radius;
+        private final Color color;
+
+        public RoundedBorder(int radius, Color color) {
+            this.radius = radius;
+            this.color = color;
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(radius+1, radius+1, radius+2, radius);
+        }
+
+        @Override
+        public boolean isBorderOpaque() {
+            return false;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(color);
+            g2.drawRoundRect(x, y, width-1, height-1, radius, radius);
+            g2.dispose();
+        }
+    }
+
+    // Business logic methods
     private void handleSendOffer(ActionEvent e) {
         try {
-            // Validate input fields
             int senderId = Integer.parseInt(senderField.getText());
             int receiverId = Integer.parseInt(receiverField.getText());
             double amount = Double.parseDouble(amountField.getText());
@@ -88,14 +229,10 @@ public class OfferGUI extends JFrame {
                 return;
             }
 
-            // Create and save the offer
             Offer offer = new Offer(senderId, receiverId, amount);
             saveOfferToFile(offer);
-
-            // Update the table with the new offer
             tableModel.addRow(new Object[]{senderId, receiverId, amount});
             clearFormFields();
-
             JOptionPane.showMessageDialog(this, "Offer sent successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "Invalid input! Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +250,6 @@ public class OfferGUI extends JFrame {
     private void saveOfferToFile(Offer offer) throws IOException {
         List<Offer> offers = loadOffersFromFile();
         offers.add(offer);
-
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(OFFER_FILE))) {
             oos.writeObject(offers);
         }
@@ -122,10 +258,7 @@ public class OfferGUI extends JFrame {
     @SuppressWarnings("unchecked")
     private List<Offer> loadOffersFromFile() {
         File file = new File(OFFER_FILE);
-        if (!file.exists()) {
-            return new ArrayList<>();
-        }
-
+        if (!file.exists()) return new ArrayList<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (List<Offer>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -140,7 +273,6 @@ public class OfferGUI extends JFrame {
         }
     }
 
-    // Inner class to represent an Offer
     private static class Offer implements Serializable {
         private final int senderId;
         private final int receiverId;
@@ -152,21 +284,12 @@ public class OfferGUI extends JFrame {
             this.amount = amount;
         }
 
-        public int getSenderId() {
-            return senderId;
-        }
-
-        public int getReceiverId() {
-            return receiverId;
-        }
-
-        public double getAmount() {
-            return amount;
-        }
+        public int getSenderId() { return senderId; }
+        public int getReceiverId() { return receiverId; }
+        public double getAmount() { return amount; }
     }
 
-    // Main method to start the GUI
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(OfferGUI::new);
+        SwingUtilities.invokeLater(() -> new OfferGUI().setVisible(true));
     }
 }
