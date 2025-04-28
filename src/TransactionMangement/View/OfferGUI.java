@@ -29,7 +29,7 @@ public class OfferGUI extends JFrame {
     public OfferGUI() {
         setTitle("Send Offer");
         setSize(600, 600); // Increased size for better spacing
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         initializeUI();
         setVisible(true);
@@ -45,7 +45,7 @@ public class OfferGUI extends JFrame {
 
         // Form panel with rounded border
         RoundedPanel formPanel = new RoundedPanel(15);
-        formPanel.setLayout(new GridLayout(4, 2, 15, 15));
+        formPanel.setLayout(new GridLayout(5, 2, 15, 15));
         formPanel.setBackground(Color.WHITE);
         formPanel.setBorder(BorderFactory.createCompoundBorder(
                 new RoundedBorder(15, PRIMARY_COLOR),
@@ -65,9 +65,20 @@ public class OfferGUI extends JFrame {
         amountField = createStyledTextField();
         formPanel.add(amountField);
 
-        // Styled buttons
+// ✅ Only add each button once:
         formPanel.add(createStyledButton("Send Offer", this::handleSendOffer));
         formPanel.add(createStyledButton("Clear", e -> clearFormFields()));
+        formPanel.add(new JLabel()); // Still keeping the empty cell
+
+// Create a small panel just for the Back button
+        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        backButtonPanel.setOpaque(false); // Make background transparent so it looks clean
+
+        JButton backButton = createStyledButton("Back", e -> handleBack());
+        backButtonPanel.add(backButton);
+
+        formPanel.add(backButtonPanel);
+
 
         mainPanel.add(formPanel, BorderLayout.NORTH);
 
@@ -103,6 +114,11 @@ public class OfferGUI extends JFrame {
         loadAndDisplayOffers();
     }
 
+    private void handleBack() {
+        this.dispose(); // Close the current OfferGUI window
+
+    }
+
     private JTextField createStyledTextField() {
         JTextField field = new JTextField();
         field.setFont(NORMAL_FONT);
@@ -136,6 +152,7 @@ public class OfferGUI extends JFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(PRIMARY_COLOR.darker());
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(PRIMARY_COLOR);
             }
@@ -182,7 +199,7 @@ public class OfferGUI extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(getBackground());
-            g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, radius, radius);
+            g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
             g2.dispose();
             super.paintComponent(g);
         }
@@ -199,7 +216,7 @@ public class OfferGUI extends JFrame {
 
         @Override
         public Insets getBorderInsets(Component c) {
-            return new Insets(radius+1, radius+1, radius+2, radius);
+            return new Insets(radius + 1, radius + 1, radius + 2, radius);
         }
 
         @Override
@@ -212,7 +229,7 @@ public class OfferGUI extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(color);
-            g2.drawRoundRect(x, y, width-1, height-1, radius, radius);
+            g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
             g2.dispose();
         }
     }
@@ -220,26 +237,32 @@ public class OfferGUI extends JFrame {
     // Business logic methods
     private void handleSendOffer(ActionEvent e) {
         try {
-            int senderId = Integer.parseInt(senderField.getText());
-            int receiverId = Integer.parseInt(receiverField.getText());
-            double amount = Double.parseDouble(amountField.getText());
+            String senderUsername = senderField.getText().trim();
+            String receiverUsername = receiverField.getText().trim();
+            double amount = Double.parseDouble(amountField.getText().trim());
+
+            if (senderUsername.isEmpty() || receiverUsername.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Sender and Receiver must not be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             if (amount <= 0) {
                 JOptionPane.showMessageDialog(this, "Amount must be greater than zero.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            Offer offer = new Offer(senderId, receiverId, amount);
+            Offer offer = new Offer(senderUsername, receiverUsername, amount);
             saveOfferToFile(offer);
-            tableModel.addRow(new Object[]{senderId, receiverId, amount});
+            tableModel.addRow(new Object[]{senderUsername, receiverUsername, amount});
             clearFormFields();
             JOptionPane.showMessageDialog(this, "Offer sent successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, "Invalid input! Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid amount! Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error saving offer: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void clearFormFields() {
         senderField.setText("");
@@ -269,27 +292,37 @@ public class OfferGUI extends JFrame {
     private void loadAndDisplayOffers() {
         List<Offer> offers = loadOffersFromFile();
         for (Offer offer : offers) {
-            tableModel.addRow(new Object[]{offer.getSenderId(), offer.getReceiverId(), offer.getAmount()});
+            tableModel.addRow(new Object[]{offer.getSenderUsername(), offer.getReceiverUsername(), offer.getAmount()});
         }
     }
+
 
     private static class Offer implements Serializable {
-        private final int senderId;
-        private final int receiverId;
+        private final String senderUsername;
+        private final String receiverUsername;
         private final double amount;
 
-        public Offer(int senderId, int receiverId, double amount) {
-            this.senderId = senderId;
-            this.receiverId = receiverId;
-            this.amount = amount;
+            public Offer(String senderUsername, String receiverUsername, double amount) {
+                this.senderUsername = senderUsername;
+                this.receiverUsername = receiverUsername;
+                this.amount = amount;
+            }
+
+            public String getSenderUsername() {
+                return senderUsername;
+            }
+
+            public String getReceiverUsername() {
+                return receiverUsername;
+            }
+
+            public double getAmount() {
+                return amount;
+            }
         }
 
-        public int getSenderId() { return senderId; }
-        public int getReceiverId() { return receiverId; }
-        public double getAmount() { return amount; }
-    }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new OfferGUI().setVisible(true));
+        public static void main(String[] args) {
+            SwingUtilities.invokeLater(() -> new OfferGUI().setVisible(true));
+        }
     }
-}
