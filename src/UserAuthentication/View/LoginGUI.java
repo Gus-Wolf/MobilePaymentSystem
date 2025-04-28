@@ -1,6 +1,6 @@
 package UserAuthentication.View;
 
-import DbManagement.Controller.DatabaseConnector;
+import UserAuthentication.Model.Database;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +10,14 @@ public class LoginGUI extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
+    private Runnable onLoginSuccess; // <-- new field
 
-    public LoginGUI() {
+    public LoginGUI(Runnable onLoginSuccess) {
+        this.onLoginSuccess = onLoginSuccess; // <-- capture the callback
+
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 150);
+        setSize(800, 450);
         setLayout(new GridLayout(3, 2));
 
         add(new JLabel("Username:"));
@@ -42,23 +45,12 @@ public class LoginGUI extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        if (DatabaseConnector.authenticate(username, password)) {
+        if (Database.authenticate(username, password)) {
             JOptionPane.showMessageDialog(this, "Login successful!");
-            navigateToDashboard();  // Navigate to the Dashboard
+            this.dispose(); // Close login window
+            new NotificationManagement.Controller.NotificationController();
         } else {
             JOptionPane.showMessageDialog(this, "Invalid username or password");
         }
     }
-
-    private void navigateToDashboard() {
-        this.setVisible(false); // Hide the current window
-        new MainMenu();   // Open the dashboard screen
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginGUI());
-    }
 }
-
-// Comment 222
-
