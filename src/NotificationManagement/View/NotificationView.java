@@ -80,7 +80,7 @@ public class NotificationView {
     }
 
     private void launchOfferGUI() {
-        OfferGUI.launch();
+        new OfferGUI();
     }
 
     private void setupEventListeners() {
@@ -103,7 +103,7 @@ public class NotificationView {
     }
 
     public void switchToBusinessView() {
-        this.viewStrategy = new BusinessNotificationView(notificationListModel);
+        this.viewStrategy = new BusinessNotificationView();
         JOptionPane.showMessageDialog(frame, "Switched to Business View.");
     }
 
