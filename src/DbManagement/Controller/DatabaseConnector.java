@@ -1,3 +1,4 @@
+
 package DbManagement.Controller;
 
 import java.sql.Connection;
@@ -8,7 +9,7 @@ import java.sql.PreparedStatement;
 
 public class DatabaseConnector {
 
-    private static final String URL = "jdbc:sqlite:mobile_payment_system.db"; // <-- make sure path is right!
+    private static final String URL = "jdbc:sqlite:mobile_payment_system2.db"; // <-- make sure path is right!
 
     public static void main(String[] args) {
         try {
@@ -21,6 +22,7 @@ public class DatabaseConnector {
 
         createUsersTable();
         createBankAccountsTable();
+        createTransactionsTable();
         insertDefaultUsers();
     }
 
@@ -63,6 +65,44 @@ public class DatabaseConnector {
             e.printStackTrace();
         }
     }
+
+    public static void createTransactionsTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS transactions (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "sender TEXT NOT NULL," +
+                "receiver TEXT NOT NULL," +
+                "amount REAL NOT NULL," +
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                ");";
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("✅ Table 'transactions' created or already exists.");
+        } catch (SQLException e) {
+            System.out.println("❌ Failed to create 'transactions' table!");
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertTransaction(String senderUsername, String receiverUsername, double amount) {
+        String sql = "INSERT INTO transactions (sender, receiver, amount) VALUES (?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, senderUsername);
+            pstmt.setString(2, receiverUsername);
+            pstmt.setDouble(3, amount);
+
+            pstmt.executeUpdate();
+            System.out.println("✅ Transaction saved: " + senderUsername + " ➔ " + receiverUsername + " ($" + amount + ")");
+
+        } catch (SQLException e) {
+            System.out.println("❌ Error saving transaction: " + e.getMessage());
+        }
+    }
+
+
 
     public static void insertDefaultUsers() {
         try (Connection conn = DriverManager.getConnection(URL);
