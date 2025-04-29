@@ -1,5 +1,7 @@
 package TransactionMangement.View;
 
+import NotificationManagement.View.NotificationView;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -26,7 +28,11 @@ public class OfferGUI extends JFrame {
     private DefaultTableModel tableModel;
     private static final String OFFER_FILE = "offers.json";
 
-    public OfferGUI() {
+    private NotificationView notificationView;
+
+
+    public OfferGUI(NotificationView notificationView) {
+        this.notificationView = notificationView; // store the reference
         setTitle("Send Offer");
         setSize(600, 600); // Increased size for better spacing
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -254,9 +260,16 @@ public class OfferGUI extends JFrame {
             Offer offer = new Offer(senderUsername, receiverUsername, amount);
             saveOfferToFile(offer);
             tableModel.addRow(new Object[]{senderUsername, receiverUsername, amount});
+            String notificationMessage = " You sent $" + String.format("%.2f", amount) + " to " + receiverUsername;
+            notificationView.showNotification(notificationMessage);
+
+
+            DbManagement.Controller.DatabaseConnector.insertTransaction(senderUsername, receiverUsername, amount);
+
             clearFormFields();
             JOptionPane.showMessageDialog(this, "Offer sent successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NumberFormatException nfe) {
+        }
+        catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "Invalid amount! Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error saving offer: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -323,6 +336,6 @@ public class OfferGUI extends JFrame {
 
 
         public static void main(String[] args) {
-            SwingUtilities.invokeLater(() -> new OfferGUI().setVisible(true));
+            SwingUtilities.invokeLater(() -> new OfferGUI(new NotificationView()).setVisible(true));
         }
     }
