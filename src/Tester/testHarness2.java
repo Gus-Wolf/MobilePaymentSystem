@@ -12,11 +12,13 @@ import NotificationManagement.Model.PaymentNotification;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
-public class testHarness {
-    public testHarness() {
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+
+
+public class testHarness2 {
+    public testHarness2() {
     }
 
     @Test
