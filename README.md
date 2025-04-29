@@ -31,7 +31,7 @@ Zach Carson: 3	Helped build out modules, javadocs and tests
 Juan Oliver: 4	Helped build out modules, javadocs and tests
 
 **M03-A04**
-Ethan Snyder: Created Notification Factory, created Notification UI Design Pattern. Redesigned the GUI for the offer and main page. Contributed to send offer use case.
+Ethan Snyder: Created Notification Factory, created Notification UI Design Pattern. Redesigned the GUI for the offer and main page. Contributed to send offer use case. Added test cases for the notification use case as well as a system test case for serialization.
 
 August Wolf 997519799: Created Factory backend for the link bank account use case 
 Created a progressive disclosure design pattern for linking bank account
