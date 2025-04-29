@@ -54,5 +54,5 @@ Juan Oliver: Created transaction table in database, linked sent offers to popula
 
 August Wolf: Created and linked SQLite due to errors with MySQL, Connected LoginGUI with the database to allow for authentication: Username must be either Gus, Juan, Ethan or Zach, and the Password must be 1234 or else you cannot get in. Connected the Link bank account to the flow of the app to allow for a better UI and flow 
 
-Ethan Snyder: Enhanced the UI and built out the notification view framework. Enhanced flow of whole application. 
+Ethan Snyder: Enhanced the UI and built out the notification view framework. Enhanced flow of whole application and worked on the send offer use case. 
 
