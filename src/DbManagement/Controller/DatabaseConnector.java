@@ -84,38 +84,25 @@ public class DatabaseConnector {
         }
     }
 
-    JButton checkBalanceBtn = new JButton("Check Balance");
-checkBalanceBtn.addActionListener(e -> {
-    String last4 = JOptionPane.showInputDialog(this, "Enter the last 4 digits of your account number:");
 
-    if (last4 == null || last4.trim().length() != 4) {
-        JOptionPane.showMessageDialog(this, "❌ Please enter exactly 4 digits.");
-        return;
-    }
+    public static boolean authenticateUser(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
-    String username = UserManagement.SessionManager.getCurrentUsername();
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-    try (Connection conn = DriverManager.getConnection("jdbc:sqlite:mobile_payment_system.db");
-         PreparedStatement pstmt = conn.prepareStatement(
-                 "SELECT balance FROM bank_accounts WHERE username = ? AND substr(account_number, -4) = ?")) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            var rs = pstmt.executeQuery();
 
-        pstmt.setString(1, username);
-        pstmt.setString(2, last4);
-        ResultSet rs = pstmt.executeQuery();
+            return rs.next();  // returns true if a matching record is found
 
-        if (rs.next()) {
-            double balance = rs.getDouble("balance");
-            JOptionPane.showMessageDialog(this, "✅ Your account balance is: $" + String.format("%.2f", balance));
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ No account found with those digits.");
+        } catch (SQLException e) {
+            System.out.println("❌ Authentication failed!");
+            e.printStackTrace();
+            return false;
         }
-
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, "❌ Error checking balance.");
     }
-});
-
 
     public static void createTransactionsTable() {
         String sql = "CREATE TABLE IF NOT EXISTS transactions (" +
