@@ -340,7 +340,7 @@ public class NotificationView {
     }
 
     private void launchOfferGUI() {
-        new OfferGUI();
+        new OfferGUI(this);
         statusLabel.setText("Offer GUI launched");
     }
 

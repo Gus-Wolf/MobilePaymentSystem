@@ -41,7 +41,7 @@ public class testHarness2 {
         }
     }
 
-    @Test
+   @Test
     public void testNotificationSerialization() throws Exception {
         Notification basicNotification = new Notification("user1");
         LoginNotification loginNotification = new LoginNotification("user2", "192.168.1.1", "New York");
