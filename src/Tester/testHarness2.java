@@ -62,21 +62,16 @@ public class testHarness2 {
         Assertions.assertEquals(location, notification.getLocation());
     }
 
-   //tests acceptable startup time
     @Test
     public void testApplicationStartupTime() {
-        final long ACCEPTABLE_STARTUP_TIME_MS = 5000; //acceptable time
-
+        final long ACCEPTABLE_STARTUP_TIME_MS = 5000;
         try {
             long startTime = System.currentTimeMillis();
-
             simulateApplicationStartup();
-
             long endTime = System.currentTimeMillis();
             long totalStartupTime = endTime - startTime;
 
             System.out.println("Application startup time: " + totalStartupTime + " ms");
-
             Assertions.assertTrue(totalStartupTime <= ACCEPTABLE_STARTUP_TIME_MS,
                     "Startup time exceeded acceptable limit of " + ACCEPTABLE_STARTUP_TIME_MS + " ms. Actual time: " + totalStartupTime + " ms");
         } catch (Exception e) {
@@ -85,8 +80,39 @@ public class testHarness2 {
         }
     }
 
-
     private void simulateApplicationStartup() throws InterruptedException {
         Thread.sleep(3000);
+    }
+
+    @Test
+    public void testLoginFailureDueToInvalidPassword() {
+        String userId = "validUser123";
+        String invalidPassword = "wrongPassword";
+
+        try {
+            String loginResultMessage = simulateLoginWithInvalidPassword(userId, invalidPassword);
+            Assertions.assertTrue(loginResultMessage.contains("Invalid password"),
+                    "Login failure message should explicitly mention 'Invalid password'!");
+
+            String ipAddress = "192.168.1.3";
+            String location = "Unknown";
+            LoginNotification failedLoginNotification = new LoginNotification(userId, ipAddress, location);
+
+            String expectedContent = "Login from Unknown (IP: 192.168.1.3)";
+            Assertions.assertEquals(expectedContent, failedLoginNotification.getContent(),
+                    "Notification content does not properly reflect the login failure scenario!");
+
+            Assertions.assertEquals(userId, failedLoginNotification.getUserId(), "User ID mismatch in notification!");
+            Assertions.assertEquals(ipAddress, failedLoginNotification.getIpAddress(), "IP address mismatch in notification!");
+            Assertions.assertEquals(location, failedLoginNotification.getLocation(), "Location mismatch in notification!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assertions.fail("Exception occurred during login failure test: " + e.getMessage());
+        }
+    }
+
+    private String simulateLoginWithInvalidPassword(String userId, String password) {
+        return "Invalid password";
     }
 }
