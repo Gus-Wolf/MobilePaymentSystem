@@ -63,6 +63,25 @@ public class testHarness2 {
     }
 
     @Test
+    public void testAuthenticateValidUser() {
+        boolean isAuthenticated = DatabaseConnector.authenticateUser("Gus", "1234");
+        assertTrue(isAuthenticated, "Authentication should succeed for valid user credentials.");
+    }
+
+    @Test
+    public void testAuthenticateInvalidPassword() {
+        boolean isAuthenticated = DatabaseConnector.authenticateUser("Gus", "wrongpassword");
+        assertFalse(isAuthenticated, "Authentication should fail for valid username but wrong password.");
+    }
+
+    @Test
+    public void testAuthenticateNonexistentUser() {
+        boolean isAuthenticated = DatabaseConnector.authenticateUser("NonexistentUser", "1234");
+        assertFalse(isAuthenticated, "Authentication should fail for non-existent user.");
+    }
+
+
+    @Test
     public void testApplicationStartupTime() {
         final long ACCEPTABLE_STARTUP_TIME_MS = 5000;
         try {
