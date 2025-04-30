@@ -76,7 +76,22 @@ public class ProfileView extends JFrame {
             BankLinker linker = BankLinkerFactory.getBankLinker(bankName);
             String result = linker.linkAccount(accNum, routing);
 
-            confirmationLabel.setText("✅ " + result);
+            // Generate random balance between $500 and $1,500
+            double randomBalance = 500 + Math.random() * 1000;
+
+            // Simulate current logged-in user (hardcoded for now)
+            String currentUser = "Gus";
+
+            boolean saved = DbManagement.Controller.DatabaseConnector.insertBankAccount(
+                    currentUser, bankName, accNum, routing, randomBalance
+            );
+
+            if (saved) {
+                confirmationLabel.setText("✅ " + result + " | Balance: $" + String.format("%.2f", randomBalance));
+            } else {
+                confirmationLabel.setText("❌ Failed to link account.");
+            }
+
             confirmationLabel.setVisible(true);
             revalidate();
         });
