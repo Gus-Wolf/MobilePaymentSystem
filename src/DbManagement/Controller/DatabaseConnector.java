@@ -66,6 +66,24 @@ public class DatabaseConnector {
         }
     }
 
+    public static void addBalanceColumnIfMissing() {
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:mobile_payment_system.db");
+             Statement stmt = conn.createStatement()) {
+
+            String sql = "ALTER TABLE bank_accounts ADD COLUMN balance REAL;";
+            stmt.execute(sql);
+            System.out.println("✅ 'balance' column added to 'bank_accounts' table.");
+
+        } catch (SQLException e) {
+            if (e.getMessage().contains("duplicate column name")) {
+                System.out.println("⚠️ 'balance' column already exists.");
+            } else {
+                System.out.println("❌ Failed to add 'balance' column!");
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void createTransactionsTable() {
         String sql = "CREATE TABLE IF NOT EXISTS transactions (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
