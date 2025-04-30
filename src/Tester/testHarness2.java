@@ -1,14 +1,10 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package Tester;
 
 import NotificationManagement.NotificationManager;
 import NotificationManagement.Model.LoginNotification;
 import NotificationManagement.Model.Notification;
 import NotificationManagement.Model.PaymentNotification;
+
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -16,8 +12,8 @@ import java.time.temporal.ChronoUnit;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-
 public class testHarness2 {
+
     public testHarness2() {
     }
 
@@ -41,16 +37,16 @@ public class testHarness2 {
         }
     }
 
-   @Test
+    @Test
     public void testNotificationSerialization() throws Exception {
         Notification basicNotification = new Notification("user1");
         LoginNotification loginNotification = new LoginNotification("user2", "192.168.1.1", "New York");
         PaymentNotification paymentNotification = new PaymentNotification("user3", 100, true, "sender123");
         Method serializeMethod = NotificationManager.class.getDeclaredMethod("serialize", Notification.class);
         serializeMethod.setAccessible(true);
-        String serializedBasic = (String)serializeMethod.invoke((Object)null, basicNotification);
-        String serializedLogin = (String)serializeMethod.invoke((Object)null, loginNotification);
-        String serializedPayment = (String)serializeMethod.invoke((Object)null, paymentNotification);
+        String serializedBasic = (String) serializeMethod.invoke((Object) null, basicNotification);
+        String serializedLogin = (String) serializeMethod.invoke((Object) null, loginNotification);
+        String serializedPayment = (String) serializeMethod.invoke((Object) null, paymentNotification);
     }
 
     @Test
@@ -64,5 +60,33 @@ public class testHarness2 {
         Assertions.assertEquals(userId, notification.getUserId());
         Assertions.assertEquals(ipAddress, notification.getIpAddress());
         Assertions.assertEquals(location, notification.getLocation());
+    }
+
+   //tests acceptable startup time
+    @Test
+    public void testApplicationStartupTime() {
+        final long ACCEPTABLE_STARTUP_TIME_MS = 5000; //acceptable time
+
+        try {
+            long startTime = System.currentTimeMillis();
+
+            simulateApplicationStartup();
+
+            long endTime = System.currentTimeMillis();
+            long totalStartupTime = endTime - startTime;
+
+            System.out.println("Application startup time: " + totalStartupTime + " ms");
+
+            Assertions.assertTrue(totalStartupTime <= ACCEPTABLE_STARTUP_TIME_MS,
+                    "Startup time exceeded acceptable limit of " + ACCEPTABLE_STARTUP_TIME_MS + " ms. Actual time: " + totalStartupTime + " ms");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assertions.fail("Exception occurred during application startup test: " + e.getMessage());
+        }
+    }
+
+
+    private void simulateApplicationStartup() throws InterruptedException {
+        Thread.sleep(3000);
     }
 }
