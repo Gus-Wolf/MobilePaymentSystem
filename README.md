@@ -56,3 +56,22 @@ August Wolf: Created and linked SQLite due to errors with MySQL, Connected Login
 
 Ethan Snyder: Enhanced the UI and built out the notification view framework. Enhanced flow of whole application and worked on the send offer use case. 
 
+
+
+
+
+FINAL SUBMISSION   M05-A01:
+
+4 use cases are - Loggin and Authenticate, Send offer, viewing notifications, linking a bank account and allowing for the user to check the funds of the bank account. 
+
+
+August Wolf: Continued to link the database up, worked on the last use case of checking the users balance, populated SQL with a random number for a bank account. 
+
+
+Juan Oliver: Helped edit up some of the other use cases and assisted in the last use case creation.
+
+
+Ethan Snyder: Helped debug and edit the other use cases and assisted in creating the last use case with database hlep.
+
+
+Zach Carson: Debugged old code and helped with UI flow. 
