@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 
 public class DatabaseConnector {
 
-    private static final String URL = "jdbc:sqlite:mobile_payment_system2.db"; // <-- make sure path is right!
+    private static final String URL = "jdbc:sqlite:mobile_payment_system.db"; // <-- make sure path is right!
 
     public static void main(String[] args) {
         try {
@@ -22,6 +22,7 @@ public class DatabaseConnector {
 
         createUsersTable();
         createBankAccountsTable();
+        addBalanceColumnIfMissing();
         createTransactionsTable();
         insertDefaultUsers();
     }
@@ -65,7 +66,6 @@ public class DatabaseConnector {
             e.printStackTrace();
         }
     }
-
     public static void addBalanceColumnIfMissing() {
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:mobile_payment_system.db");
              Statement stmt = conn.createStatement()) {
@@ -104,6 +104,7 @@ public class DatabaseConnector {
         }
     }
 
+
     public static void createTransactionsTable() {
         String sql = "CREATE TABLE IF NOT EXISTS transactions (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -139,6 +140,27 @@ public class DatabaseConnector {
             System.out.println("❌ Error saving transaction: " + e.getMessage());
         }
     }
+
+    public static boolean insertBankAccount(String username, String bankName, String accountNumber, String routingNumber, double balance) {
+        String sql = "INSERT INTO bank_accounts (username, bank_name, account_number, routing_number, balance) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:mobile_payment_system.db");
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, bankName);
+            pstmt.setString(3, accountNumber);
+            pstmt.setString(4, routingNumber);
+            pstmt.setDouble(5, balance);
+            pstmt.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 
