@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class ProfileView extends JFrame {
 
@@ -32,6 +33,9 @@ public class ProfileView extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton linkBankBtn = new JButton("Link Bank Account");
         buttonPanel.add(linkBankBtn);
+        JButton showBalanceBtn = new JButton("Show Balance");
+        buttonPanel.add(showBalanceBtn);
+
 
         // Hidden panel: Bank account form
         JPanel bankFormPanel = new JPanel();
@@ -67,6 +71,35 @@ public class ProfileView extends JFrame {
             linkBankBtn.setEnabled(false);
             revalidate(); // Refresh layout
         });
+        showBalanceBtn.addActionListener(e -> {
+            String last4 = JOptionPane.showInputDialog(this, "Enter the last 4 digits of your account number:");
+
+            if (last4 == null || last4.trim().length() != 4 || !last4.matches("\\d{4}")) {
+                JOptionPane.showMessageDialog(this, "❌ Please enter exactly 4 numeric digits.");
+                return;
+            }
+
+            try (Connection conn = DriverManager.getConnection("jdbc:sqlite:mobile_payment_system.db");
+                 PreparedStatement pstmt = conn.prepareStatement(
+                         "SELECT balance, account_number FROM bank_accounts WHERE substr(account_number, -4) = ?")) {
+
+                pstmt.setString(1, last4);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    double balance = rs.getDouble("balance");
+                    String fullAcc = rs.getString("account_number");
+                    JOptionPane.showMessageDialog(this, "✅ Account ending in " + last4 + " has a balance of: $" + String.format("%.2f", balance));
+                } else {
+                    JOptionPane.showMessageDialog(this, "❌ No account found ending in " + last4 + ".");
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "❌ Error checking balance.");
+            }
+        });
+
 
         submitBtn.addActionListener(e -> {
             String bankName = bankNameField.getText();
